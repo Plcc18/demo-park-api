@@ -2,6 +2,9 @@ package com.mballen.demo_park_api.web.controller;
 
 import com.mballen.demo_park_api.entity.Usuario;
 import com.mballen.demo_park_api.service.UsuarioService;
+import com.mballen.demo_park_api.web.dto.UsuarioCreateDTO;
+import com.mballen.demo_park_api.web.dto.UsuarioResponseDTO;
+import com.mballen.demo_park_api.web.dto.mapper.UsuarioMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +22,12 @@ public class UsuarioController {
     //Mapeamento do spring
     @PostMapping
     //Usuario como argumento pra ter os mesmos campos do cliente
-    public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+    public ResponseEntity<UsuarioResponseDTO> create(@RequestBody UsuarioCreateDTO createDTO) {
         //executa o metodo de salvar um usuario no banco
-       Usuario user = usuarioService.salvar(usuario);
+       Usuario user = usuarioService.salvar(UsuarioMapper.toUsuario(createDTO));
 
        //retorna um uma resposta HTTP e coloca o usuario no corpo de resposta
-       return ResponseEntity.status(HttpStatus.CREATED).body(user);
+       return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioMapper.toDTO(user));
     }
 
     @GetMapping("/{id}")
