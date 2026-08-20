@@ -26,4 +26,15 @@ public class UsuarioService {
                 () -> new RuntimeException("Usuário não encontrado.")
         );
     }
+
+    @Transactional
+    public Usuario editarSenha(Long id, String password) {
+        Usuario user = buscarPorId(id);
+
+        // Como a entidade está sendo gerenciada pelo JPA dentro da transação,
+        // o Hibernate detecta a alteração e gera o UPDATE automaticamente.
+        user.setPassword(password);
+
+        return user;
+    }
 }
