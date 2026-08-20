@@ -5,10 +5,7 @@ import com.mballen.demo_park_api.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,8 +18,18 @@ public class UsuarioController {
     @PostMapping
     //Usuario como argumento pra ter os mesmos campos do cliente
     public ResponseEntity<Usuario> create(@RequestBody Usuario usuario) {
+        //executa o metodo de salvar um usuario no banco
        Usuario user = usuarioService.salvar(usuario);
+
+       //retorna um uma resposta HTTP e coloca o usuario no corpo de resposta
        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getById(@PathVariable Long id) {
+        Usuario user = usuarioService.buscarPorId(id);
+        //passa o usuario diretamente no corpo de resposta
+        return ResponseEntity.ok(user);
     }
 
 }
